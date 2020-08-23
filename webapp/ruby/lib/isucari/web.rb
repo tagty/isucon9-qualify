@@ -1,6 +1,8 @@
 require 'json'
 require 'securerandom'
 require 'sinatra/base'
+require 'sinatra/custom_logger'
+require 'logger'
 require 'mysql2'
 require 'mysql2-cs-bind'
 require 'bcrypt'
@@ -50,6 +52,14 @@ module Isucari
     set :root, File.join(__dir__, '..', '..')
     set :session_secret, 'tagomoris'
     set :sessions, 'key' => 'isucari_session', 'expire_after' => 3600
+
+    helpers Sinatra::CustomLogger
+
+    configure :development, :production do
+      logger = Logger.new(File.open("#{root}/log/#{environment}.log", 'a'))
+      logger.level = Logger::DEBUG if development?
+      set :logger, logger
+    end
 
     helpers do
       def db
@@ -1195,7 +1205,7 @@ module Isucari
     # getReports
     get '/reports.json' do
       transaction_evidences = db.xquery('SELECT * FROM `transaction_evidences` WHERE `id` > 15007')
-      
+
       response = transaction_evidences.map do |transaction_evidence|
         {
           'id' => transaction_evidence['id'],
@@ -1221,6 +1231,7 @@ module Isucari
     end
 
     get '/' do
+      logger.info 'Some message!!!!!!!!!!!!!!!!!!!'
       get_index
     end
 
