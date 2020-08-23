@@ -1231,7 +1231,6 @@ module Isucari
     end
 
     get '/' do
-      logger.info 'Some message!!!!!!!!!!!!!!!!!!!'
       get_index
     end
 
@@ -1252,7 +1251,6 @@ module Isucari
     end
 
     get '/sell' do
-      logger.info 'Sell!!!!!!!!!!!!!!!!!!!'
       get_index
     end
 
