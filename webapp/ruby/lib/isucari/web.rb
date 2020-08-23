@@ -1252,6 +1252,7 @@ module Isucari
     end
 
     get '/sell' do
+      logger.info 'Sell!!!!!!!!!!!!!!!!!!!'
       get_index
     end
 
